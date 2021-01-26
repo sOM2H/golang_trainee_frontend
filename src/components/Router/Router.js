@@ -1,8 +1,4 @@
 import React from 'react'
-import Task from '../Task';
-import Tasks from '../Tasks';
-import Request from '../Request';
-import Requests from '../Requests';
 import Posts from '../Posts'
 import Post from '../Post'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
