@@ -25,7 +25,6 @@ export default class Login extends React.Component {
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
      await axios.post('http://localhost:8585/api/users/login', qs.stringify({email: this.state.login, password: this.state.password}))
       .then(res => {
-        console.log({email: this.state.login, password: this.state.password});
         const token = res.data['user']['token'];
         this.setState({ token });
       })

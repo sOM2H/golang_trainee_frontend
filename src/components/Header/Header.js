@@ -25,16 +25,13 @@ class Header extends React.Component {
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <Link to="/" className="nav-link">Главная</Link>
+              <Link to="/posts" className="nav-link">Posts</Link>
             </li>
             <li className="nav-item active">
-              <Link to="/requests" className="nav-link">Отправки</Link>
+              <Link to="/NewPost" className="nav-link">Create Post</Link>
             </li>
             <li className="nav_item active">
-              <Link to="/tasks" className="nav-link">Задачи</Link>
-            </li>
-            <li className="nav_item active">
-              <Link to="/" onClick={() => this.logout()} className="nav-link">Выход</Link>
+              <Link to="/" onClick={() => this.logout()} className="nav-link">Logout</Link>
             </li>
           </ul>
         </div>

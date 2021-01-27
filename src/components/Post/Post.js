@@ -1,7 +1,9 @@
 import React from 'react'
 import axios from 'axios';
 import AceEditor from 'react-ace';
+const qs = require('qs');
 import { Link } from "react-router-dom";
+import { Button, Input} from 'antd';
 
 import 'brace/mode/javascript'
 import 'brace/mode/ruby'
@@ -13,14 +15,22 @@ export default class Post extends React.Component {
   state = {
     post: [],
     comments: [],
-    commentsCount: 0
+    commentsCount: 0,
+    body: ""
   }
 
-  constructor(props, context) {
-    super(props, context);
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
 
-    this.onChange = this.onChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+  onSubmit = async() => {
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+     await axios.post('http://localhost:8585/api/comments', qs.stringify({body: this.state.body, post_id: this.props.match.params.post}), config)
+        .then(res => {
+      location.reload();
+      })
   }
 
   componentDidMount() {   
@@ -41,27 +51,6 @@ export default class Post extends React.Component {
       })
   }
 
-  onChange(newValue) {
-    this.state.body = newValue
-  }
-
-  handleChange(event) {
-    const language = event.target.value;
-    this.setState({ language });
-  }
-
-  send = async() => {
-     await axios.post('http://localhost:3001/api/v1/requests',{
-                        body: this.state.body,
-                        language_id: this.state.language,
-                        task_id: this.state.task.id },
-                        config)
-      .then(res => {
-        location.replace('/requests')
-      }).catch(err => {
-        console.log(err.response.data)
-      })
-  }
 
   render() {
     return (
@@ -74,9 +63,25 @@ export default class Post extends React.Component {
                 <p>{this.state.post.body}</p>
             </div>
         </div>
-        { this.state.commentsCount !== 0 ? <h2>Comments</h2>  : "" }
+        <h3>Add Comment</h3>
+         <div className="form-group">
+        <textarea
+          name='body'
+          placeholder='Body'
+          className="form-control"
+          id="exampleFormControlTextarea1"
+          style={{marginBottom: 50}}
+          onChange={e => this.onChange(e)}
+          value={this.state.body} />
+        <Button onClick={() => this.onSubmit()}
+          type="primary"
+          className="btn btn-lg btn-primary btn-block actions">
+            Create Comment
+        </Button>
+        </div>
+        { this.state.commentsCount !== 0 ? <h2>Comments</h2>  : null }
             { this.state.comments.map(comment =>
-        <div className="card" style={{marginBottom: 20}}>
+        <div className="card" style={{marginBottom: 20}}  key={comment.id}>
              <div className="card-body">
                 <p>{comment.body}</p>
             </div>

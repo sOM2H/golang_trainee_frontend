@@ -26,7 +26,7 @@ export default class Posts extends React.Component {
       { this.state.posts.map(post =>
         <div className="card" style={{marginBottom: 20}}>
             <div className="card-header">
-                <h3>{post.title}</h3>
+              <h3> <Link to={"/posts/" + post.id }  className="nav-link">{post.title}</Link> </h3>
             </div>
              <div className="card-body">
                 <p>{post.body}</p>
