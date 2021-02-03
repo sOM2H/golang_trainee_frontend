@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Router from '../Router';
-import Login from '../Login';
+import LoginRouter from '../LoginRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 import './App.css';
 
 export default class App extends Component {
@@ -17,7 +15,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        {localStorage.getItem('authToken') ? <Router /> : <Login />}
+        {localStorage.getItem('authToken') ? <Router /> : <LoginRouter />}
       </div>
     )
   }

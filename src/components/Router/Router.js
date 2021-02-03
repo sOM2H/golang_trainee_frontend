@@ -14,7 +14,7 @@ const Router = () => {
         <Route exact path="/" component={Posts}/>    
         <Route exact path='/posts' component={Posts} />
         <Route path='/posts/:post' component={Post} />
-        <Route path='/NewPost/' component={NewPost} />
+        <Route path='/NewPost' component={NewPost} />
         <Redirect to='/'/>
         </Switch>
     </BrowserRouter>
