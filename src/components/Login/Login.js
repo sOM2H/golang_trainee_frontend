@@ -1,6 +1,5 @@
 import React from 'react'
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
 import axios from 'axios';
 const qs = require('qs');
 import { Button, Input} from 'antd';
@@ -14,7 +13,7 @@ export default class Login extends React.Component {
     this.state = {
       login: "",
       password: "",
-      token: ""
+      token: "",
     };
   }
 
@@ -23,22 +22,24 @@ export default class Login extends React.Component {
       [e.target.name]: e.target.value,
     });
   }
-  responseGoogle = (response) => {
-    console.log(response);
-  }
 
-  responseFacebook = (response) => {
+  responseGoogle = async(response) => {
     console.log(response);
+    await axios.post('http://localhost:8585/api/users/oauth_google', qs.stringify({token: response['tokenId']}))
+      .then(res => {
+        const token = res.data['user']['token'];
+        this.setState({ token });
+      })
+    localStorage.setItem('authToken', this.state.token);
+    location.reload();
   }
 
   onSubmit = async() => {
-    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
      await axios.post('http://localhost:8585/api/users/login', qs.stringify({email: this.state.login, password: this.state.password}))
       .then(res => {
         const token = res.data['user']['token'];
         this.setState({ token });
       })
-    console.log({email: this.state.login, password: this.state.password});
     localStorage.setItem('authToken', this.state.token);
     location.reload();
   }
@@ -47,7 +48,7 @@ export default class Login extends React.Component {
     return (
       <div className="form-signin text-center">
         <img className="mb-4 " src={ Logo } alt=""/>
-        <h1 className="h3 mb-3 font-weight-normal">Вход в систему</h1>
+        <h1 className="h3 mb-3 font-weight-normal">Login</h1>
         <Input
           className="form-control filed"
           name='login'
@@ -65,21 +66,15 @@ export default class Login extends React.Component {
         <Button onClick={() => this.onSubmit()}
           type="primary"
           className="btn btn-lg btn-primary btn-block actions">
-            Войти
+            Login
         </Button>
         <GoogleLogin
           clientId="1028306666002-i7m38n0j1u5lukp2o63avotnvqiaujnt.apps.googleusercontent.com"
-          buttonText="Login"
+          buttonText="Login with Google"
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
           cookiePolicy={'single_host_origin'}
-        />
-        <FacebookLogin
-          appId="2621273511455529"
-          autoLoad={true}
-          fields="name,email,picture"
-          onClick={this.componentClicked}
-          callback={this.responseFacebook} 
+          className="btn btn-lg btn-primary btn-block actions"
         />
         <p className="mt-5 mb-3 text-muted">Еще не зарегистированы?</p>
         <Link to="/signup" className="nav-link">Регистрация</Link>

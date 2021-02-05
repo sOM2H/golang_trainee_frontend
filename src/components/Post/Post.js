@@ -1,13 +1,8 @@
 import React from 'react'
 import axios from 'axios';
-import AceEditor from 'react-ace';
 const qs = require('qs');
-import { Link } from "react-router-dom";
-import { Button, Input} from 'antd';
+import { Button} from 'antd';
 
-import 'brace/mode/javascript'
-import 'brace/mode/ruby'
-import 'brace/theme/monokai'
 
 const config = {headers: { "Authorization" : localStorage.getItem('authToken') }};
 

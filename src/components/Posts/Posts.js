@@ -12,7 +12,6 @@ export default class Posts extends React.Component {
   componentDidMount() {
     axios.get('http://localhost:8585/api/posts', {headers: { "Authorization" : localStorage.getItem('authToken') } })
       .then(res => {
-        console.log(res.data)
         const posts = res.data['posts'];
         const postsCount = res.data['postsCount'];
         this.setState({ posts });
